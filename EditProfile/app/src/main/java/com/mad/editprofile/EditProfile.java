@@ -1,11 +1,14 @@
 package com.mad.editprofile;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.PersistableBundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class EditProfile extends AppCompatActivity {
@@ -17,6 +20,25 @@ public class EditProfile extends AppCompatActivity {
     private static final int MAIL_ERROR = -5;
     private static final int PHONE_ERROR = -6;
 
+    private static final String MyPREF = "User_Data";
+    private static final String Name = "keyName";
+    private static final String Surname = "keySurname";
+    private static final String Address = "keyAddress";
+    private static final String Description = "keyDescription";
+    private static final String Password = "keyPassword";
+    private static final String Email = "keyEmail";
+    private static final String Phone = "keyPhone";
+
+    private String name;
+    private String surname;
+    private String addr;
+    private String desc;
+    private String psw;
+    private String mail;
+    private String phone;
+
+    private SharedPreferences user_data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +48,32 @@ public class EditProfile extends AppCompatActivity {
 
         confirm_reg.setOnClickListener(e -> {
             if(checkFields() == 0){
-                //save state -> shared preferences
+                //returns instance pointing to the file that contains values to be saved
+                //MODE_PRIVATE: the file can only be accessed using calling application
+                user_data = getSharedPreferences(MyPREF, MODE_PRIVATE);
+
+                SharedPreferences.Editor editor = user_data.edit();
+
+                //store data into file
+                editor.putString(Name, name);
+                editor.putString(Surname, surname);
+                editor.putString(Address, addr);
+                editor.putString(Description, desc);
+                editor.putString(Password, psw);
+                editor.putString(Email, mail);
+                editor.putString(Phone, phone);
+                editor.apply();
+                //data saved and start new activity
+                Intent i = new Intent();
+                i.putExtra(Name, name);
+                i.putExtra(Surname, surname);
+                i.putExtra(Address, addr);
+                i.putExtra(Description, desc);
+                i.putExtra(Email, mail);
+                i.putExtra(Phone, phone);
+                setResult(1, i);
+                finish();
+
             }
             else{
                 AlertDialog alertDialog = new AlertDialog.Builder(EditProfile.this).create();
@@ -41,17 +88,33 @@ public class EditProfile extends AppCompatActivity {
                 alertDialog.show();
             }
 
-            finish();
+
         });
     }
 
     private int checkFields(){
-        String name = ((TextView)findViewById(R.id.name)).getText().toString();
-        String surname = ((TextView)findViewById(R.id.surname)).getText().toString();
-        String addr = ((TextView)findViewById(R.id.address)).getText().toString();
-        String psw = ((TextView)findViewById(R.id.password)).getText().toString();
-        String mail = ((TextView)findViewById(R.id.mail)).getText().toString();
-        String phone = ((TextView)findViewById(R.id.phone)).getText().toString();
+        //String name = ((TextView)findViewById(R.id.name)).getText().toString();
+        //String surname = ((TextView)findViewById(R.id.surname)).getText().toString();
+        //String addr = ((TextView)findViewById(R.id.address)).getText().toString();
+        //String psw = ((TextView)findViewById(R.id.password)).getText().toString();
+        //String mail = ((TextView)findViewById(R.id.mail)).getText().toString();
+        //String phone = ((TextView)findViewById(R.id.phone)).getText().toString();
+
+        EditText et_name = findViewById(R.id.name);
+        EditText et_surname = findViewById(R.id.surname);
+        EditText et_addr = findViewById(R.id.address);
+        EditText et_desc = findViewById(R.id.description);
+        EditText et_psw = findViewById(R.id.password);
+        EditText et_mail = findViewById(R.id.mail);
+        EditText et_phone = findViewById(R.id.phone);
+
+        name = et_name.getText().toString();
+        surname = et_surname.getText().toString();
+        addr = et_addr.getText().toString();
+        desc = et_desc.getText().toString();
+        psw = et_psw.getText().toString();
+        mail = et_mail.getText().toString();
+        phone = et_phone.getText().toString();
 
         if(name.trim().length() == 0)
             return NAME_ERROR;
