@@ -4,6 +4,7 @@
     android:id="@+id/myScrollView1"
     android:layout_width="fill_parent" android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android" >
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -11,7 +12,7 @@
 
         <EditText
             android:id="@+id/password"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
@@ -23,22 +24,22 @@
 
         <EditText
             android:id="@+id/mail"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:hint="Mail address"
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.157"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/surname"
             app:layout_constraintTop_toBottomOf="@+id/address" />
 
         <EditText
             android:id="@+id/phone"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
@@ -53,7 +54,7 @@
 
         <EditText
             android:id="@+id/address"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="24dp"
@@ -62,16 +63,15 @@
             android:hint="Address delivery"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.157"
             app:layout_constraintStart_toEndOf="@+id/name"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
         <EditText
             android:id="@+id/surname"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="20dp"
             android:ems="10"
             android:hint="Surname"
             android:inputType="textMultiLine|textPersonName"
@@ -80,11 +80,11 @@
 
         <EditText
             android:id="@+id/description"
-            android:layout_width="441dp"
-            android:layout_height="76dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="30dp"
             android:ems="10"
             android:hint="Description"
@@ -98,9 +98,8 @@
 
         <EditText
             android:id="@+id/name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
             android:layout_marginTop="24dp"
             android:ems="10"
             android:hint="Name"

@@ -8,12 +8,11 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        tools:context=".EasterEgg">
 
         <TextView
-            android:id="@+id/mail"
+            android:id="@+id/mail_ee"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_marginStart="16dp"
@@ -21,13 +20,12 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:gravity="center_vertical|start"
-            android:hint="Mail address"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/address" />
+            app:layout_constraintTop_toBottomOf="@+id/address_ee" />
 
         <TextView
-            android:id="@+id/phone"
+            android:id="@+id/phone_ee"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_marginStart="16dp"
@@ -35,13 +33,12 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:gravity="center_vertical|start"
-            android:hint="Phone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mail" />
+            app:layout_constraintTop_toBottomOf="@+id/mail_ee" />
 
         <TextView
-            android:id="@+id/address"
+            android:id="@+id/address_ee"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_marginStart="16dp"
@@ -49,13 +46,12 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:gravity="center_vertical|start"
-            android:hint="Address delivery"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/surname" />
+            app:layout_constraintTop_toBottomOf="@+id/surname_ee" />
 
         <TextView
-            android:id="@+id/surname"
+            android:id="@+id/surname_ee"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_marginStart="16dp"
@@ -63,13 +59,12 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:gravity="center_vertical|start"
-            android:hint="Surname"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name" />
+            app:layout_constraintTop_toBottomOf="@+id/name_ee" />
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/name_ee"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_marginStart="16dp"
@@ -77,27 +72,25 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:gravity="center_vertical|start"
-            android:hint="Name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
-
+            app:layout_constraintTop_toBottomOf="@+id/profile_image_ee" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textView3_ee"
             android:layout_width="wrap_content"
             android:layout_height="21dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Profile"
+            android:text="Best Profile in this APP"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
+            android:id="@+id/profile_image_ee"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_marginStart="16dp"
@@ -109,61 +102,61 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/textView3_ee" />
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/imageView5_ee"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/address"
-            app:layout_constraintEnd_toStartOf="@+id/address"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+            app:layout_constraintEnd_toStartOf="@+id/address_ee"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4_ee" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/plus_ee"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/name"
-            app:layout_constraintEnd_toStartOf="@+id/name"
-            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+            app:layout_constraintEnd_toStartOf="@+id/name_ee"
+            app:layout_constraintTop_toBottomOf="@+id/profile_image_ee" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/imageView4_ee"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/surname"
-            app:layout_constraintEnd_toStartOf="@+id/surname"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            app:layout_constraintEnd_toStartOf="@+id/surname_ee"
+            app:layout_constraintTop_toBottomOf="@+id/plus_ee" />
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/imageView6_ee"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/email"
-            app:layout_constraintEnd_toStartOf="@+id/mail"
-            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+            app:layout_constraintEnd_toStartOf="@+id/mail_ee"
+            app:layout_constraintTop_toBottomOf="@+id/imageView5_ee" />
 
 
         <ImageView
-            android:id="@+id/title"
+            android:id="@+id/title_ee"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/phone"
-            app:layout_constraintEnd_toStartOf="@+id/phone"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+            app:layout_constraintEnd_toStartOf="@+id/phone_ee"
+            app:layout_constraintTop_toBottomOf="@+id/imageView6_ee" />
 
         <TextView
-            android:id="@+id/description"
+            android:id="@+id/description_ee"
             android:layout_width="250dp"
             android:layout_height="80dp"
             android:layout_marginStart="16dp"
@@ -179,7 +172,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phone" />
+            app:layout_constraintTop_toBottomOf="@+id/phone_ee" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

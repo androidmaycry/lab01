@@ -9,7 +9,6 @@ import android.media.ExifInterface;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -54,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        setEasterEgg();
     }
 
     @Override
@@ -142,5 +143,12 @@ public class MainActivity extends AppCompatActivity {
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
                 matrix, true);
+    }
+
+    private void setEasterEgg(){
+        findViewById(R.id.textView3).setOnClickListener(e -> {
+            Intent easter_egg = new Intent(getApplicationContext(), EasterEgg.class);
+            startActivity(easter_egg);
+        });
     }
 }

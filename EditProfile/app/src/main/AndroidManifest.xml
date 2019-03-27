@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mad.editprofile">
 
-    <uses-feature android:name="android.hardware.camera2"
+    <uses-feature
+        android:name="android.hardware.camera2"
         android:required="true" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -17,12 +18,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".EasterEgg"></activity>
         <activity
             android:name=".EditProfile"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,7 +39,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/path_strings" />
         </provider>
-
     </application>
 
 </manifest>

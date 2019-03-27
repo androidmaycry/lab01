@@ -40,7 +40,7 @@
         android:hint="Phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toEndOf="@+id/title"
         app:layout_constraintTop_toBottomOf="@+id/mail" />
 
     <TextView
@@ -159,7 +159,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/title"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_marginStart="100dp"
@@ -184,7 +184,7 @@
         android:paddingRight="5dp"
         android:paddingBottom="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        app:layout_constraintEnd_toStartOf="@+id/title"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_image"
