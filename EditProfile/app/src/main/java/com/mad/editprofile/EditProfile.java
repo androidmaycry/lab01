@@ -43,7 +43,6 @@ public class EditProfile extends AppCompatActivity {
     private static final String Photo = "keyPhoto";
     private static final String FirstRun = "keyRun";
 
-
     private static final int PERMISSION_GALLERY_REQUEST = 1;
 
     private String name;
@@ -106,21 +105,28 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
-        ImageView img = findViewById(R.id.imageView2);
-        img.setOnClickListener(e -> {
-            AlertDialog alertDialog = new AlertDialog.Builder(EditProfile.this, R.style.AlertDialogStyle).create();
-            LayoutInflater factory = LayoutInflater.from(EditProfile.this);
-            final View view = factory.inflate(R.layout.custom_dialog, null);
-            view.findViewById(R.id.camera).setOnClickListener( c -> cameraIntent());
-            view.findViewById(R.id.gallery).setOnClickListener( g -> galleryIntent());
-            alertDialog.setView(view);
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Camera",
-                    (dialog, which) -> cameraIntent());
+        findViewById(R.id.plus).setOnClickListener(p -> editPhoto());
+        findViewById(R.id.img_profile).setOnClickListener(e -> editPhoto());
+    }
 
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Gallery",
-                    (dialog, which) -> galleryIntent());
-            alertDialog.show(); //todo problema quando giri con il pop-up
+    private void editPhoto(){
+        AlertDialog alertDialog = new AlertDialog.Builder(EditProfile.this, R.style.AlertDialogStyle).create();
+        LayoutInflater factory = LayoutInflater.from(EditProfile.this);
+        final View view = factory.inflate(R.layout.custom_dialog, null);
+        view.findViewById(R.id.camera).setOnClickListener( c -> {
+            cameraIntent();
+            alertDialog.dismiss();
         });
+        view.findViewById(R.id.gallery).setOnClickListener( g -> {
+            galleryIntent();
+            alertDialog.dismiss();
+        });
+        alertDialog.setView(view);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Camera",
+                (dialog, which) -> cameraIntent());
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Gallery",
+                (dialog, which) -> galleryIntent());
+        alertDialog.show();
     }
 
     private void cameraIntent(){
@@ -228,7 +234,7 @@ public class EditProfile extends AppCompatActivity {
         Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         myBitmap = adjustPhoto(myBitmap, photoPath);
 
-        ((ImageView)findViewById(R.id.imageView2)).setImageBitmap(myBitmap);
+        ((ImageView)findViewById(R.id.img_profile)).setImageBitmap(myBitmap);
     }
 
     private Bitmap adjustPhoto(Bitmap bitmap, String photoPath) throws IOException {
@@ -331,7 +337,7 @@ public class EditProfile extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            ((ImageView)findViewById(R.id.imageView2)).setImageBitmap(myBitmap);
+            ((ImageView)findViewById(R.id.img_profile)).setImageBitmap(myBitmap);
         }
     }
 

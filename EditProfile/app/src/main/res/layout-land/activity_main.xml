@@ -85,7 +85,7 @@
         android:hint="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/plus"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -128,7 +128,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/plus"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_marginStart="100dp"
@@ -145,7 +145,7 @@
         android:layout_marginTop="8dp"
         android:src="@drawable/surname"
         app:layout_constraintStart_toEndOf="@+id/profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/plus" />
 
     <ImageView
         android:id="@+id/imageView6"

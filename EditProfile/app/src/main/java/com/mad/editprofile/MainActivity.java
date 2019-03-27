@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String Photo = "keyPhoto";
     private static final String FirstRun = "keyRun";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //Log.d("ONRESULT:", "Result: " + resultCode);
+        //Log.d("ON-RESULT:", "Result code: " + resultCode);
 
         if(resultCode == 30 && data != null && data.getBooleanExtra(FirstRun,false)){
             finish();

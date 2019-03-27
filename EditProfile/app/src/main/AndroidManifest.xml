@@ -19,6 +19,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".EditProfile"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".MainActivity">
             <intent-filter>
