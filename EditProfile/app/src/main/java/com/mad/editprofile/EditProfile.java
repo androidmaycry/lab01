@@ -1,7 +1,6 @@
 package com.mad.editprofile;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,7 +12,6 @@ import android.icu.text.SimpleDateFormat;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -27,20 +25,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
 public class EditProfile extends AppCompatActivity {
-    private static final int OK_CHECK = 0;
-    private static final int NAME_ERROR = -1;
-    private static final int SURNAME_ERROR = -2;
-    private static final int ADDR_ERROR = -3;
-    private static final int PSW_ERROR = -4;
-    private static final int MAIL_ERROR = -5;
-    private static final int PHONE_ERROR = -6;
-
     private static final String MyPREF = "User_Data";
     private static final String Name = "keyName";
     private static final String Surname = "keySurname";
@@ -51,6 +42,8 @@ public class EditProfile extends AppCompatActivity {
     private static final String Phone = "keyPhone";
     private static final String Photo = "keyPhoto";
 
+    private static final int PERMISSION_GALLERY_REQUEST = 1;
+
     private String name;
     private String surname;
     private String addr;
@@ -59,6 +52,7 @@ public class EditProfile extends AppCompatActivity {
     private String mail;
     private String phone;
     private String currentPhotoPath;
+    private String error_msg;
 
     private SharedPreferences user_data;
 
@@ -74,13 +68,11 @@ public class EditProfile extends AppCompatActivity {
         }
 
         Button confirm_reg = findViewById(R.id.button);
-
         confirm_reg.setOnClickListener(e -> {
-            if(checkFields() == OK_CHECK){
+            if(checkFields()){
                 //returns instance pointing to the file that contains values to be saved
                 //MODE_PRIVATE: the file can only be accessed using calling application
                 user_data = getSharedPreferences(MyPREF, MODE_PRIVATE);
-
                 SharedPreferences.Editor editor = user_data.edit();
 
                 //store data into file
@@ -93,6 +85,7 @@ public class EditProfile extends AppCompatActivity {
                 editor.putString(Phone, phone);
                 editor.putString(Photo, currentPhotoPath);
                 editor.apply();
+
                 //data saved and start new activity
                 Intent i = new Intent();
                 i.putExtra(Name, name);
@@ -102,20 +95,12 @@ public class EditProfile extends AppCompatActivity {
                 i.putExtra(Email, mail);
                 i.putExtra(Phone, phone);
                 i.putExtra(Photo, currentPhotoPath);
+
                 setResult(1, i);
                 finish();
             }
             else{
-                AlertDialog alertDialog = new AlertDialog.Builder(EditProfile.this).create();
-                alertDialog.setTitle("Alert");
-                alertDialog.setMessage("Alert message to be shown");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
+                Toast.makeText(getApplicationContext(), error_msg, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -134,7 +119,7 @@ public class EditProfile extends AppCompatActivity {
                                 photoFile = createImageFile();
                             } catch (IOException ex) {
                                 // Error occurred while creating the File
-                                Log.d("my tag","Erorre nel creare file.");
+                                Log.d("FILE: ","error creating file");
                             }
                             // Continue only if the File was successfully created
                             if (photoFile != null) {
@@ -152,18 +137,19 @@ public class EditProfile extends AppCompatActivity {
                                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                             ActivityCompat.requestPermissions(this,
                                     new String[] { Manifest.permission.READ_EXTERNAL_STORAGE },
-                                    1);
-                            Log.d("Permission Run Time", "Obtained");
+                                    PERMISSION_GALLERY_REQUEST);
                         }
-                        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                        photoPickerIntent.setType("image/*");
-                        startActivityForResult(photoPickerIntent, 1);
+                        else{
+                            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                            photoPickerIntent.setType("image/*");
+                            startActivityForResult(photoPickerIntent, 1);
+                        }
                     });
             alertDialog.show();
         });
     }
 
-    private int checkFields(){
+    private boolean checkFields(){
         name = ((EditText)findViewById(R.id.name)).getText().toString();
         surname = ((EditText)findViewById(R.id.surname)).getText().toString();
         addr = ((EditText)findViewById(R.id.address)).getText().toString();
@@ -172,50 +158,58 @@ public class EditProfile extends AppCompatActivity {
         mail = ((EditText)findViewById(R.id.mail)).getText().toString();
         phone = ((EditText)findViewById(R.id.phone)).getText().toString();
 
-        if(name.trim().length() == 0)
-            return NAME_ERROR;
+        if(name.trim().length() == 0){
+            error_msg = "Insert name";
+            return false;
+        }
 
-        if(surname.trim().length() == 0)
-            return SURNAME_ERROR;
+        if(surname.trim().length() == 0){
+            error_msg = "Insert surname";
+            return false;
+        }
 
-        if(addr.trim().length() == 0)
-            return ADDR_ERROR;
+        if(addr.trim().length() == 0){
+            error_msg = "Insert address";
+            return false;
+        }
 
-        if(psw.trim().length() == 0)
-            return PSW_ERROR;
+        if(psw.trim().length() == 0){
+            error_msg = "Insert password";
+            return false;
+        }
 
-        if(mail.trim().length() == 0 || !android.util.Patterns.EMAIL_ADDRESS.matcher(mail).matches())
-            return MAIL_ERROR;
+        if(mail.trim().length() == 0 || !android.util.Patterns.EMAIL_ADDRESS.matcher(mail).matches()){
+            error_msg = "Insert e-mail";
+            return false;
+        }
 
-        if(phone.trim().length() == 0)
-            return PHONE_ERROR;
+        if(phone.trim().length() == 0){
+            error_msg = "Insert phone number";
+            return false;
+        }
 
-        return OK_CHECK;
+        return true;
     }
 
     private void getData() throws IOException {
         user_data = getSharedPreferences(MyPREF, MODE_PRIVATE);
 
-        String nm = user_data.getString(Name, "");
-        String surnm = user_data.getString(Surname, "");
-        String addr = user_data.getString(Address, "");
-        String desc = user_data.getString(Description, "");
-        String psw = user_data.getString(Password, "");
-        String email = user_data.getString(Email, "");
-        String phone = user_data.getString(Phone, "");
-        String photoPath = user_data.getString(Photo, "");
+        ((EditText)findViewById(R.id.name)).setText(user_data.getString(Name, ""));
+        ((EditText)findViewById(R.id.surname)).setText(user_data.getString(Surname, ""));
+        ((EditText)findViewById(R.id.address)).setText(user_data.getString(Address, ""));
+        ((EditText)findViewById(R.id.description)).setText(user_data.getString(Description, ""));
+        ((EditText)findViewById(R.id.password)).setText(user_data.getString(Password, ""));
+        ((EditText)findViewById(R.id.mail)).setText(user_data.getString(Email, ""));
+        ((EditText)findViewById(R.id.phone)).setText(user_data.getString(Phone, ""));
+        setPhoto(user_data.getString(Photo, ""));
+    }
 
-        ((EditText)findViewById(R.id.name)).setText(nm);
-        ((EditText)findViewById(R.id.surname)).setText(surnm);
-        ((EditText)findViewById(R.id.address)).setText(addr);
-        ((EditText)findViewById(R.id.description)).setText(desc);
-        ((EditText)findViewById(R.id.password)).setText(psw);
-        ((EditText)findViewById(R.id.mail)).setText(email);
-        ((EditText)findViewById(R.id.phone)).setText(phone);
-
+    private void setPhoto(String photoPath) throws IOException {
         File imgFile = new File(photoPath);
+
         Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         myBitmap = adjustPhoto(myBitmap, photoPath);
+
         ((ImageView)findViewById(R.id.imageView2)).setImageBitmap(myBitmap);
     }
 
@@ -271,6 +265,27 @@ public class EditProfile extends AppCompatActivity {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_GALLERY_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("Permission Run Time: ", "Obtained");
+
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                    photoPickerIntent.setType("image/*");
+                    startActivityForResult(photoPickerIntent, 1);
+                } else {
+                    Log.d("Permission Run Time: ", "Denied");
+
+                    Toast.makeText(getApplicationContext(), "Access to media files denied", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -286,7 +301,7 @@ public class EditProfile extends AppCompatActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            //Log.d("Camera path:", picturePath);
+            //Log.d("Photo path: ", picturePath);
             currentPhotoPath = picturePath;
         }
 
@@ -303,12 +318,23 @@ public class EditProfile extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putString(Photo, currentPhotoPath);
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onRestoreInstanceState(savedInstanceState, persistentState);
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        currentPhotoPath = savedInstanceState.getString(Photo);
+        if(currentPhotoPath != null){
+            try {
+                setPhoto(currentPhotoPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

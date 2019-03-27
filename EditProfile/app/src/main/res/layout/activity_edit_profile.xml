@@ -60,7 +60,7 @@
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="Address delivery"
-            android:inputType="textPersonName"
+            android:inputType="textPersonName|textCapWords|textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/surname" />
@@ -74,7 +74,7 @@
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="Surname"
-            android:inputType="textMultiLine|textPersonName"
+            android:inputType="textPersonName|textCapWords"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name" />
@@ -88,7 +88,7 @@
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="Description"
-            android:inputType="textPersonName"
+            android:inputType="textMultiLine|textCapSentences"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/address" />
@@ -102,7 +102,7 @@
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="Name"
-            android:inputType="textPersonName"
+            android:inputType="textPersonName|textCapWords"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView2" />

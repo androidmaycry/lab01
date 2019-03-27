@@ -9,6 +9,7 @@ import android.media.ExifInterface;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -28,10 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String Phone = "keyPhone";
     private static final String Photo = "keyPhoto";
 
-    private File imgFile;
-
-    private SharedPreferences user_data;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,32 +40,19 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(edit_profile, 0);
         }
 
-        user_data = getSharedPreferences(MyPREF, MODE_PRIVATE);
+        SharedPreferences user_data = getSharedPreferences(MyPREF, MODE_PRIVATE);
 
-        String nm = user_data.getString(Name, "");
-        String surnm = user_data.getString(Surname, "");
-        String addr = user_data.getString(Address, "");
-        String desc = user_data.getString(Description, "");
-        String email = user_data.getString(Email, "");
-        String phone = user_data.getString(Phone, "");
-        String photoPath = user_data.getString(Photo, "");
-
-        ((TextView)findViewById(R.id.name)).setText(nm);
-        ((TextView)findViewById(R.id.surname)).setText(surnm);
-        ((TextView)findViewById(R.id.address)).setText(addr);
-        ((TextView)findViewById(R.id.description)).setText(desc);
-        ((TextView)findViewById(R.id.mail)).setText(email);
-        ((TextView)findViewById(R.id.phone)).setText(phone);
-
-        imgFile = new File(photoPath);
-        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+        ((TextView)findViewById(R.id.name)).setText(user_data.getString(Name, ""));
+        ((TextView)findViewById(R.id.surname)).setText(user_data.getString(Surname, ""));
+        ((TextView)findViewById(R.id.address)).setText(user_data.getString(Address, ""));
+        ((TextView)findViewById(R.id.description)).setText(user_data.getString(Description, ""));
+        ((TextView)findViewById(R.id.mail)).setText(user_data.getString(Email, ""));
+        ((TextView)findViewById(R.id.phone)).setText(user_data.getString(Phone, ""));
         try {
-            myBitmap = adjustPhoto(myBitmap, photoPath);
+            setPhoto(user_data.getString(Photo, ""));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ((ImageView)findViewById(R.id.profile_image)).setImageBitmap(myBitmap);
-        imgFile = null;
     }
 
     @Override
@@ -85,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.item1:
                 Intent edit_profile = new Intent(getApplicationContext(), EditProfile.class);
                 startActivityForResult(edit_profile, 0);
-                //Toast.makeText(getApplicationContext(),"Item 1 Selected", Toast.LENGTH_LONG).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -95,33 +78,35 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("ONRESULT:", "Result: " + resultCode);
+
+        if(!((File)new File("/data/data/com.mad.editprofile/shared_prefs/User_Data.xml")).exists()){
+            //on first run, so no profile available
+            finish();
+        }
 
         if(data != null && resultCode == 1){
-            String nm = data.getStringExtra(Name);
-            String surnm = data.getStringExtra(Surname);
-            String addr = data.getStringExtra(Address);
-            String desc = data.getStringExtra(Description);
-            String email = data.getStringExtra(Email);
-            String phone = data.getStringExtra(Phone);
-            String photoPath = data.getStringExtra(Photo);
-
-            ((TextView)findViewById(R.id.name)).setText(nm);
-            ((TextView)findViewById(R.id.surname)).setText(surnm);
-            ((TextView)findViewById(R.id.address)).setText(addr);
-            ((TextView)findViewById(R.id.description)).setText(desc);
-            ((TextView)findViewById(R.id.mail)).setText(email);
-            ((TextView)findViewById(R.id.phone)).setText(phone);
-
-            imgFile = new File(photoPath);
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            ((TextView)findViewById(R.id.name)).setText(data.getStringExtra(Name));
+            ((TextView)findViewById(R.id.surname)).setText(data.getStringExtra(Surname));
+            ((TextView)findViewById(R.id.address)).setText(data.getStringExtra(Address));
+            ((TextView)findViewById(R.id.description)).setText(data.getStringExtra(Description));
+            ((TextView)findViewById(R.id.mail)).setText(data.getStringExtra(Email));
+            ((TextView)findViewById(R.id.phone)).setText(data.getStringExtra(Phone));
             try {
-                myBitmap = adjustPhoto(myBitmap, photoPath);
+                setPhoto(data.getStringExtra(Photo));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            ((ImageView)findViewById(R.id.profile_image)).setImageBitmap(myBitmap);
-            imgFile = null;
         }
+    }
+
+    private void setPhoto(String photoPath) throws IOException {
+        File imgFile = new File(photoPath);
+
+        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+        myBitmap = adjustPhoto(myBitmap, photoPath);
+
+        ((ImageView)findViewById(R.id.profile_image)).setImageBitmap(myBitmap);
     }
 
     private Bitmap adjustPhoto(Bitmap bitmap, String photoPath) throws IOException {
