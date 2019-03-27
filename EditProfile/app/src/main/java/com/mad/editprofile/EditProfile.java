@@ -145,7 +145,7 @@ public class EditProfile extends AppCompatActivity {
                             startActivityForResult(photoPickerIntent, 1);
                         }
                     });
-            alertDialog.show();
+            alertDialog.show(); //todo problema quando giri con il pop-up
         });
     }
 
@@ -194,14 +194,23 @@ public class EditProfile extends AppCompatActivity {
     private void getData() throws IOException {
         user_data = getSharedPreferences(MyPREF, MODE_PRIVATE);
 
-        ((EditText)findViewById(R.id.name)).setText(user_data.getString(Name, ""));
-        ((EditText)findViewById(R.id.surname)).setText(user_data.getString(Surname, ""));
-        ((EditText)findViewById(R.id.address)).setText(user_data.getString(Address, ""));
-        ((EditText)findViewById(R.id.description)).setText(user_data.getString(Description, ""));
-        ((EditText)findViewById(R.id.password)).setText(user_data.getString(Password, ""));
-        ((EditText)findViewById(R.id.mail)).setText(user_data.getString(Email, ""));
-        ((EditText)findViewById(R.id.phone)).setText(user_data.getString(Phone, ""));
-        setPhoto(user_data.getString(Photo, ""));
+        name = user_data.getString(Name, "");
+        surname = user_data.getString(Surname, "");
+        addr = user_data.getString(Address, "");
+        desc = user_data.getString(Description, "");
+        psw = user_data.getString(Password, "");
+        mail = user_data.getString(Email, "");
+        phone = user_data.getString(Phone, "");
+        currentPhotoPath = user_data.getString(Photo, "");
+
+        ((EditText)findViewById(R.id.name)).setText(name);
+        ((EditText)findViewById(R.id.surname)).setText(surname);
+        ((EditText)findViewById(R.id.address)).setText(addr);
+        ((EditText)findViewById(R.id.description)).setText(desc);
+        ((EditText)findViewById(R.id.password)).setText(psw);
+        ((EditText)findViewById(R.id.mail)).setText(mail);
+        ((EditText)findViewById(R.id.phone)).setText(phone);
+        setPhoto(currentPhotoPath);
     }
 
     private void setPhoto(String photoPath) throws IOException {

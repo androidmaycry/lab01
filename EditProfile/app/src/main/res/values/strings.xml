@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">EditProfile</string>
+    <string name="app_name">
+        <b>APPetit</b>
+    </string>
 </resources>

@@ -80,10 +80,10 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("ONRESULT:", "Result: " + resultCode);
 
-        if(!((File)new File("/data/data/com.mad.editprofile/shared_prefs/User_Data.xml")).exists()){
+        /*if(!((File)new File("/data/data/com.mad.editprofile/shared_prefs/User_Data.xml")).exists()){
             //on first run, so no profile available
             finish();
-        }
+        }*/
 
         if(data != null && resultCode == 1){
             ((TextView)findViewById(R.id.name)).setText(data.getStringExtra(Name));
