@@ -42,8 +42,10 @@ public class EditProfile extends AppCompatActivity {
     private static final String Phone = "keyPhone";
     private static final String Photo = "keyPhoto";
     private static final String FirstRun = "keyRun";
+    private static final String DialogOpen ="keyDialog";
 
     private static final int PERMISSION_GALLERY_REQUEST = 1;
+    private boolean dialog_open = false;
 
     private String name;
     private String surname;
@@ -113,19 +115,30 @@ public class EditProfile extends AppCompatActivity {
         AlertDialog alertDialog = new AlertDialog.Builder(EditProfile.this, R.style.AlertDialogStyle).create();
         LayoutInflater factory = LayoutInflater.from(EditProfile.this);
         final View view = factory.inflate(R.layout.custom_dialog, null);
+
+        dialog_open = true;
+
         view.findViewById(R.id.camera).setOnClickListener( c -> {
             cameraIntent();
             alertDialog.dismiss();
+            dialog_open = false;
         });
         view.findViewById(R.id.gallery).setOnClickListener( g -> {
             galleryIntent();
             alertDialog.dismiss();
+            dialog_open = false;
         });
         alertDialog.setView(view);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Camera",
-                (dialog, which) -> cameraIntent());
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Gallery",
-                (dialog, which) -> galleryIntent());
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Camera", (dialog, which) -> {
+            cameraIntent();
+            dialog.dismiss();
+            dialog_open = false;
+        });
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Gallery", (dialog, which) -> {
+            galleryIntent();
+            dialog.dismiss();
+            dialog_open = false;
+        });
         alertDialog.show();
     }
 
@@ -343,14 +356,11 @@ public class EditProfile extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         user_data = getSharedPreferences(MyPREF, MODE_PRIVATE);
 
-        if(user_data.getString(Name, "") == "") {
-
+        if(user_data.getString(Name, "") == ""){
             Intent i = new Intent();
             i.putExtra(FirstRun, true);
-
             setResult(30, i);
         }
         finish();
@@ -361,6 +371,7 @@ public class EditProfile extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
 
         savedInstanceState.putString(Photo, currentPhotoPath);
+        savedInstanceState.putBoolean(DialogOpen, dialog_open);
     }
 
     @Override
@@ -375,5 +386,8 @@ public class EditProfile extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+        if(savedInstanceState.getBoolean(DialogOpen))
+            editPhoto();
     }
 }
