@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String Email = "keyEmail";
     private static final String Phone = "keyPhone";
     private static final String Photo = "keyPhoto";
+    private static final String FirstRun = "keyRun";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +80,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("ONRESULT:", "Result: " + resultCode);
+        //Log.d("ONRESULT:", "Result: " + resultCode);
 
-        /*if(!((File)new File("/data/data/com.mad.editprofile/shared_prefs/User_Data.xml")).exists()){
-            //on first run, so no profile available
+        if(resultCode == 30 && data != null && data.getBooleanExtra(FirstRun,false)){
             finish();
-        }*/
+        }
 
         if(data != null && resultCode == 1){
             ((TextView)findViewById(R.id.name)).setText(data.getStringExtra(Name));

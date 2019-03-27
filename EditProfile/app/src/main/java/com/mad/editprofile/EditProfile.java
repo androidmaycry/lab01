@@ -41,6 +41,8 @@ public class EditProfile extends AppCompatActivity {
     private static final String Email = "keyEmail";
     private static final String Phone = "keyPhone";
     private static final String Photo = "keyPhoto";
+    private static final String FirstRun = "keyRun";
+
 
     private static final int PERMISSION_GALLERY_REQUEST = 1;
 
@@ -109,44 +111,51 @@ public class EditProfile extends AppCompatActivity {
             AlertDialog alertDialog = new AlertDialog.Builder(EditProfile.this, R.style.AlertDialogStyle).create();
             LayoutInflater factory = LayoutInflater.from(EditProfile.this);
             final View view = factory.inflate(R.layout.custom_dialog, null);
+            view.findViewById(R.id.camera).setOnClickListener( c -> cameraIntent());
+            view.findViewById(R.id.gallery).setOnClickListener( g -> galleryIntent());
             alertDialog.setView(view);
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Camera",
-                    (dialog, which) -> {
-                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                            File photoFile = null;
-                            try {
-                                photoFile = createImageFile();
-                            } catch (IOException ex) {
-                                // Error occurred while creating the File
-                                Log.d("FILE: ","error creating file");
-                            }
-                            // Continue only if the File was successfully created
-                            if (photoFile != null) {
-                                Uri photoURI = FileProvider.getUriForFile(this,
-                                        "com.example.android.fileprovider",
-                                        photoFile);
-                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                                startActivityForResult(takePictureIntent, 2);
-                            }
-                        }
-                    });
+                    (dialog, which) -> cameraIntent());
+
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Gallery",
-                    (dialog, which) -> {
-                        if (ContextCompat.checkSelfPermission(this,
-                                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(this,
-                                    new String[] { Manifest.permission.READ_EXTERNAL_STORAGE },
-                                    PERMISSION_GALLERY_REQUEST);
-                        }
-                        else{
-                            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                            photoPickerIntent.setType("image/*");
-                            startActivityForResult(photoPickerIntent, 1);
-                        }
-                    });
+                    (dialog, which) -> galleryIntent());
             alertDialog.show(); //todo problema quando giri con il pop-up
         });
+    }
+
+    private void cameraIntent(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Log.d("FILE: ","error creating file");
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, 2);
+            }
+        }
+    }
+
+    private void galleryIntent(){
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[] { Manifest.permission.READ_EXTERNAL_STORAGE },
+                    PERMISSION_GALLERY_REQUEST);
+        }
+        else{
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            photoPickerIntent.setType("image/*");
+            startActivityForResult(photoPickerIntent, 1);
+        }
     }
 
     private boolean checkFields(){
@@ -324,6 +333,21 @@ public class EditProfile extends AppCompatActivity {
             }
             ((ImageView)findViewById(R.id.imageView2)).setImageBitmap(myBitmap);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        user_data = getSharedPreferences(MyPREF, MODE_PRIVATE);
+
+        if(user_data.getString(Name, "") == "") {
+
+            Intent i = new Intent();
+            i.putExtra(FirstRun, true);
+
+            setResult(30, i);
+        }
+        finish();
     }
 
     @Override
