@@ -1,1 +1,1 @@
-include ':app', ':restaurateur', ':deliveryman'
+include ':customer', ':restaurateur', ':deliveryman'

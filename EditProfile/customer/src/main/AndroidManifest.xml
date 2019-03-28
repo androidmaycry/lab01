@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.mad.editprofile">
+    package="com.mad.customer">
 
     <uses-feature
         android:name="android.hardware.camera2"
@@ -18,11 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".EasterEggProfile"></activity>
+        <activity android:name="com.mad.customer.EasterEggProfile"></activity>
         <activity
-            android:name=".EditProfile"
+            android:name="com.mad.customer.EditProfile"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.mad.customer.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

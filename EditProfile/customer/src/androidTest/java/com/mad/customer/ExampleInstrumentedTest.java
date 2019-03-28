@@ -1,4 +1,4 @@
-package com.mad.editprofile;
+package com.mad.customer;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

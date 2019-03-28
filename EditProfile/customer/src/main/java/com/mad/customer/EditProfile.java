@@ -1,7 +1,6 @@
-package com.mad.editprofile;
+package com.mad.customer;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;

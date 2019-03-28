@@ -1,4 +1,4 @@
-package com.mad.editprofile;
+package com.mad.customer;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.mad.editprofile;
+package com.mad.customer;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
