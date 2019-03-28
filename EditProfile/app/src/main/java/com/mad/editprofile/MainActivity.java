@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setEasterEgg(){
         findViewById(R.id.textView3).setOnClickListener(e -> {
-            Intent easter_egg = new Intent(getApplicationContext(), EasterEgg.class);
+            Intent easter_egg = new Intent(getApplicationContext(), EasterEggProfile.class);
             startActivity(easter_egg);
         });
     }

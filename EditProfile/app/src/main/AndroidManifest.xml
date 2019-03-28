@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".EasterEgg"></activity>
+        <activity android:name=".EasterEggProfile"></activity>
         <activity
             android:name=".EditProfile"
             android:windowSoftInputMode="stateHidden" />

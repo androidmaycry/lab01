@@ -1,6 +1,7 @@
 package com.mad.editprofile;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -37,7 +38,6 @@ public class EditProfile extends AppCompatActivity {
     private static final String Surname = "keySurname";
     private static final String Address = "keyAddress";
     private static final String Description = "keyDescription";
-    private static final String Password = "keyPassword";
     private static final String Email = "keyEmail";
     private static final String Phone = "keyPhone";
     private static final String Photo = "keyPhoto";
@@ -51,7 +51,6 @@ public class EditProfile extends AppCompatActivity {
     private String surname;
     private String addr;
     private String desc;
-    private String psw;
     private String mail;
     private String phone;
     private String currentPhotoPath;
@@ -83,7 +82,6 @@ public class EditProfile extends AppCompatActivity {
                 editor.putString(Surname, surname);
                 editor.putString(Address, addr);
                 editor.putString(Description, desc);
-                editor.putString(Password, psw);
                 editor.putString(Email, mail);
                 editor.putString(Phone, phone);
                 editor.putString(Photo, currentPhotoPath);
@@ -118,26 +116,31 @@ public class EditProfile extends AppCompatActivity {
 
         dialog_open = true;
 
+        alertDialog.setOnCancelListener(dialog -> {
+            dialog_open = false;
+            alertDialog.dismiss();
+        });
+
         view.findViewById(R.id.camera).setOnClickListener( c -> {
             cameraIntent();
-            alertDialog.dismiss();
             dialog_open = false;
+            alertDialog.dismiss();
         });
         view.findViewById(R.id.gallery).setOnClickListener( g -> {
             galleryIntent();
-            alertDialog.dismiss();
             dialog_open = false;
+            alertDialog.dismiss();
         });
         alertDialog.setView(view);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Camera", (dialog, which) -> {
             cameraIntent();
-            dialog.dismiss();
             dialog_open = false;
+            dialog.dismiss();
         });
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Gallery", (dialog, which) -> {
             galleryIntent();
-            dialog.dismiss();
             dialog_open = false;
+            dialog.dismiss();
         });
         alertDialog.show();
     }
@@ -182,7 +185,6 @@ public class EditProfile extends AppCompatActivity {
         surname = ((EditText)findViewById(R.id.surname)).getText().toString();
         addr = ((EditText)findViewById(R.id.address)).getText().toString();
         desc = ((EditText)findViewById(R.id.description)).getText().toString();
-        psw = ((EditText)findViewById(R.id.password)).getText().toString();
         mail = ((EditText)findViewById(R.id.mail)).getText().toString();
         phone = ((EditText)findViewById(R.id.phone)).getText().toString();
 
@@ -198,11 +200,6 @@ public class EditProfile extends AppCompatActivity {
 
         if(addr.trim().length() == 0){
             error_msg = "Insert address";
-            return false;
-        }
-
-        if(psw.trim().length() == 0){
-            error_msg = "Insert password";
             return false;
         }
 
@@ -226,7 +223,6 @@ public class EditProfile extends AppCompatActivity {
         surname = user_data.getString(Surname, "");
         addr = user_data.getString(Address, "");
         desc = user_data.getString(Description, "");
-        psw = user_data.getString(Password, "");
         mail = user_data.getString(Email, "");
         phone = user_data.getString(Phone, "");
         currentPhotoPath = user_data.getString(Photo, "");
@@ -235,7 +231,6 @@ public class EditProfile extends AppCompatActivity {
         ((EditText)findViewById(R.id.surname)).setText(surname);
         ((EditText)findViewById(R.id.address)).setText(addr);
         ((EditText)findViewById(R.id.description)).setText(desc);
-        ((EditText)findViewById(R.id.password)).setText(psw);
         ((EditText)findViewById(R.id.mail)).setText(mail);
         ((EditText)findViewById(R.id.phone)).setText(phone);
         setPhoto(currentPhotoPath);
@@ -356,6 +351,7 @@ public class EditProfile extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        dialog_open = false;
         user_data = getSharedPreferences(MyPREF, MODE_PRIVATE);
 
         if(user_data.getString(Name, "") == ""){
@@ -363,6 +359,7 @@ public class EditProfile extends AppCompatActivity {
             i.putExtra(FirstRun, true);
             setResult(30, i);
         }
+
         finish();
     }
 
@@ -370,6 +367,12 @@ public class EditProfile extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
 
+        savedInstanceState.putString(Name, ((EditText)findViewById(R.id.name)).getText().toString());
+        savedInstanceState.putString(Surname, ((EditText)findViewById(R.id.surname)).getText().toString());
+        savedInstanceState.putString(Address, ((EditText)findViewById(R.id.address)).getText().toString());
+        savedInstanceState.putString(Description, ((EditText)findViewById(R.id.description)).getText().toString());
+        savedInstanceState.putString(Email, ((EditText)findViewById(R.id.mail)).getText().toString());
+        savedInstanceState.putString(Phone, ((EditText)findViewById(R.id.phone)).getText().toString());
         savedInstanceState.putString(Photo, currentPhotoPath);
         savedInstanceState.putBoolean(DialogOpen, dialog_open);
     }
@@ -378,6 +381,12 @@ public class EditProfile extends AppCompatActivity {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
+        ((EditText)findViewById(R.id.name)).setText(savedInstanceState.getString(Name));
+        ((EditText)findViewById(R.id.surname)).setText(savedInstanceState.getString(Surname));
+        ((EditText)findViewById(R.id.address)).setText(savedInstanceState.getString(Address));
+        ((EditText)findViewById(R.id.description)).setText(savedInstanceState.getString(Description));
+        ((EditText)findViewById(R.id.mail)).setText(savedInstanceState.getString(Email));
+        ((EditText)findViewById(R.id.phone)).setText(savedInstanceState.getString(Phone));
         currentPhotoPath = savedInstanceState.getString(Photo);
         if(currentPhotoPath != null){
             try {
