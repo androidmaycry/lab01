@@ -34,6 +34,7 @@ import java.util.Date;
 
 public class EditProfile extends AppCompatActivity {
     private static final String MyPREF = "User_Data";
+    private static final String CheckPREF = "First Run";
     private static final String Name = "keyName";
     private static final String Address = "keyAddress";
     private static final String Description = "keyDescription";
@@ -54,7 +55,7 @@ public class EditProfile extends AppCompatActivity {
     private String currentPhotoPath;
     private String error_msg;
 
-    private SharedPreferences user_data;
+    private SharedPreferences user_data, first_check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -340,7 +341,11 @@ public class EditProfile extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         dialog_open = false;
-        user_data = getSharedPreferences(MyPREF, MODE_PRIVATE);
+        first_check = getSharedPreferences(CheckPREF, MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = first_check.edit();
+        editor.putBoolean("flagRun", true);
+        editor.apply();
 
         if(user_data.getString(Name, "") == ""){
             Intent i = new Intent();

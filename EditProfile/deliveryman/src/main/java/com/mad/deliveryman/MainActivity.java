@@ -20,7 +20,7 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     private static final String MyPREF = "User_Data";
-
+    private static final String CheckPREF = "First Run";
     private static final String Name = "keyName";
     private static final String Surname = "keySurname";
     private static final String Description = "keyDescription";
@@ -29,24 +29,33 @@ public class MainActivity extends AppCompatActivity {
     private static final String Photo = "keyPhoto";
     private static final String FirstRun = "keyRun";
 
+    private SharedPreferences first_check;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         File f = new File("/data/data/com.mad.deliveryman/shared_prefs/User_Data.xml");
-        if (!f.exists()){
+        if (!f.exists()) {
             Intent edit_profile = new Intent(getApplicationContext(), EditProfile.class);
             startActivityForResult(edit_profile, 0);
+            first_check = getSharedPreferences(CheckPREF, MODE_PRIVATE);
+            if (first_check.getBoolean("flagRun", false)) {
+                SharedPreferences.Editor editor = first_check.edit();
+                editor.putBoolean("flagRun", false);
+                editor.apply();
+                finishActivity(0);
+            }
         }
 
         SharedPreferences user_data = getSharedPreferences(MyPREF, MODE_PRIVATE);
 
-        ((TextView)findViewById(R.id.name)).setText(user_data.getString(Name, ""));
-        ((TextView)findViewById(R.id.surname)).setText(user_data.getString(Surname, ""));
-        ((TextView)findViewById(R.id.description)).setText(user_data.getString(Description, ""));
-        ((TextView)findViewById(R.id.mail)).setText(user_data.getString(Email, ""));
-        ((TextView)findViewById(R.id.phone)).setText(user_data.getString(Phone, ""));
+        ((TextView) findViewById(R.id.name)).setText(user_data.getString(Name, ""));
+        ((TextView) findViewById(R.id.surname)).setText(user_data.getString(Surname, ""));
+        ((TextView) findViewById(R.id.description)).setText(user_data.getString(Description, ""));
+        ((TextView) findViewById(R.id.mail)).setText(user_data.getString(Email, ""));
+        ((TextView) findViewById(R.id.phone)).setText(user_data.getString(Phone, ""));
         try {
             setPhoto(user_data.getString(Photo, ""));
         } catch (IOException e) {
@@ -64,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.item1:
                 Intent edit_profile = new Intent(getApplicationContext(), EditProfile.class);
                 startActivityForResult(edit_profile, 0);
@@ -79,16 +88,19 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         //Log.d("ON-RESULT:", "Result code: " + resultCode);
 
-        if(resultCode == 30 && data != null && data.getBooleanExtra(FirstRun,false)){
+        if (resultCode == 30 && data != null && data.getBooleanExtra(FirstRun, false)) {
+            SharedPreferences.Editor editor = first_check.edit();
+            editor.putBoolean("flagRun", false);
+            editor.apply();
             finish();
         }
 
-        if(data != null && resultCode == 1){
-            ((TextView)findViewById(R.id.name)).setText(data.getStringExtra(Name));
-            ((TextView)findViewById(R.id.surname)).setText(data.getStringExtra(Surname));
-            ((TextView)findViewById(R.id.description)).setText(data.getStringExtra(Description));
-            ((TextView)findViewById(R.id.mail)).setText(data.getStringExtra(Email));
-            ((TextView)findViewById(R.id.phone)).setText(data.getStringExtra(Phone));
+        if (data != null && resultCode == 1) {
+            ((TextView) findViewById(R.id.name)).setText(data.getStringExtra(Name));
+            ((TextView) findViewById(R.id.surname)).setText(data.getStringExtra(Surname));
+            ((TextView) findViewById(R.id.description)).setText(data.getStringExtra(Description));
+            ((TextView) findViewById(R.id.mail)).setText(data.getStringExtra(Email));
+            ((TextView) findViewById(R.id.phone)).setText(data.getStringExtra(Phone));
             try {
                 setPhoto(data.getStringExtra(Photo));
             } catch (IOException e) {
@@ -103,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         myBitmap = adjustPhoto(myBitmap, photoPath);
 
-        ((ImageView)findViewById(R.id.profile_image)).setImageBitmap(myBitmap);
+        ((ImageView) findViewById(R.id.profile_image)).setImageBitmap(myBitmap);
     }
 
     private Bitmap adjustPhoto(Bitmap bitmap, String photoPath) throws IOException {
@@ -112,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 ExifInterface.ORIENTATION_UNDEFINED);
 
         Bitmap rotatedBitmap = null;
-        switch(orientation) {
+        switch (orientation) {
 
             case ExifInterface.ORIENTATION_ROTATE_90:
                 rotatedBitmap = rotateImage(bitmap, 90);
@@ -142,12 +154,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onRestoreInstanceState(savedInstanceState, persistentState);
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
     }
 }

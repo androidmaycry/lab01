@@ -16,7 +16,7 @@ public class EasterEggProfile extends AppCompatActivity {
         ((TextView)findViewById(R.id.surname_ee)).setText("Malnati");
         ((TextView)findViewById(R.id.address_ee)).setText("Gujarati Hindu Modh Baniya");
         ((TextView)findViewById(R.id.description_ee)).setText("Malnati for President");
-        ((TextView)findViewById(R.id.mail_ee)).setText("bestProfEUW@polito.it");
+        ((TextView)findViewById(R.id.mail_ee)).setText("bestProf@polito.it");
         ((TextView)findViewById(R.id.phone_ee)).setText("0110907168");
         ((ImageView)findViewById(R.id.profile_image_ee)).setImageResource(R.drawable.photo_malnati);
     }

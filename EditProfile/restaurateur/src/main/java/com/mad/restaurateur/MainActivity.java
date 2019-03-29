@@ -20,7 +20,7 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     private static final String MyPREF = "User_Data";
-
+    private static final String CheckPREF = "First Run";
     private static final String Name = "keyName";
     private static final String Address = "keyAddress";
     private static final String Description = "keyDescription";
@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String Phone = "keyPhone";
     private static final String Photo = "keyPhoto";
     private static final String FirstRun = "keyRun";
+
+    private SharedPreferences first_check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
         if (!f.exists()){
             Intent edit_profile = new Intent(getApplicationContext(), EditProfile.class);
             startActivityForResult(edit_profile, 0);
+            first_check = getSharedPreferences(CheckPREF, MODE_PRIVATE);
+            if(first_check.getBoolean("flagRun", false )){
+                SharedPreferences.Editor editor = first_check.edit();
+                editor.putBoolean("flagRun", false);
+                editor.apply();
+                finishActivity(0);
+            }
         }
 
         SharedPreferences user_data = getSharedPreferences(MyPREF, MODE_PRIVATE);
@@ -80,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
         //Log.d("ON-RESULT:", "Result code: " + resultCode);
 
         if(resultCode == 30 && data != null && data.getBooleanExtra(FirstRun,false)){
+            SharedPreferences.Editor editor = first_check.edit();
+            editor.putBoolean("flagRun", false);
+            editor.apply();
             finish();
         }
 
@@ -142,12 +154,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onRestoreInstanceState(savedInstanceState, persistentState);
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
     }
 }
