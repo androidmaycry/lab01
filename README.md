@@ -18,6 +18,6 @@ At the first run, since there is no defined profile, the APP will ask you to cre
 
 From an implementation point of view:
 - The user's data are stored through **Shared Preferencies**.
-- Camera permission are required in order to access to the gallery: the private method *private void galleryIntent()* will handle the permission request.
+- Camera permission are required in order to access to the gallery: the private method private `void galleryIntent()` will handle the permission request.
 - Different layout has been implementd (landscape and customized alert dialog)
-- Methods *onSaveInstanceState(Bundle savedInstanceState)* and *public void onRestoreInstanceState(Bundle savedInstanceState)* have been implemented in order to handle the saving of some useful data when *onPause()* is called.
+- Methods `onSaveInstanceState(Bundle savedInstanceState)` and `public void onRestoreInstanceState(Bundle savedInstanceState)` have been implemented in order to handle the saving of some useful data when `onPause()` is called.
